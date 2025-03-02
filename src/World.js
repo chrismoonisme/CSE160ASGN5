@@ -77,7 +77,7 @@ var FSHADER_SOURCE = `
 
         if(u_lightOn){
 
-            if(u_whichTexture == -2){
+            if(u_whichTexture == -2 || u_whichTexture == 3){
                 
                 gl_FragColor = vec4(specular + diffuse + ambient, 1.0);  
 
@@ -434,7 +434,7 @@ function renderScene(){
 
     gl.uniform3f(u_lightPos, g_lightPos[0], g_lightPos[1], g_lightPos[2]);
     gl.uniform3f(u_cameraPos, g_camera.eye.elements[0], g_camera.eye.elements[1], g_camera.eye.elements[2]);
-    gl.uniformli(u_lightOn, g_lightOn);
+    gl.uniform1i(u_lightOn, g_lightOn);
 
     //objects
     var box = new Cube();
