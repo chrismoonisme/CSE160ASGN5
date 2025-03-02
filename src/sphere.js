@@ -1,3 +1,12 @@
+//helpers
+function cos(x){
+    return Math.cos(x);
+ }
+ 
+ function sin(x){
+    return Math.sin(x);
+ }
+
 //triangle class
 class Sphere{
 
@@ -20,102 +29,48 @@ class Sphere{
         // Pass the color of a point to u_FragColor variable
         gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
         gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+
+        var d = Math.PI/10;
+        var dd = Math.PI/10;
+
+        for(var t = 0; t < Math.PI; t += d){
+
+            for(var r = 0; r < (2 * Math.PI); r += d){
+
+                var p1 = [sin(t)*cos(r), sin(t)*sin(r), cos(t)];
+                var p2 = [sin(t+dd)*cos(r), sin(t+dd)*sin(r), cos(t+dd)];
+                var p3 = [sin(t)*cos(r+dd), sin(t)*sin(r+dd), cos(t)];
+                var p4 = [sin(t+dd)*cos(r+dd), sin(t+dd)*sin(r+dd), cos(t+dd)];
+    
+                var uv1 = [t/Math.PI,      r/(2*Math.PI)];
+                var uv2 = [(t+dd)/Math.PI, r/(2*Math.PI)];
+                var uv3 = [t/Math.PI,      (r+dd)/(2*Math.PI)];
+                var uv4 = [(t+dd)/Math.PI, (r+dd)/(2*Math.PI)];
+    
+    
+                var v = [];
+                var uv = [];
+                v=v.concat(p1); uv=uv.concat(uv1);
+                v=v.concat(p2); uv=uv.concat(uv2);
+                v=v.concat(p4); uv=uv.concat(uv4);
+    
+                gl.uniform4f(u_FragColor, 1,1,1,1);
+                drawTriangle3DUVNormal(v,uv,v);
+    
+                v=[]; uv=[];
+                v=v.concat(p1); uv=uv.concat(uv1);
+                v=v.concat(p4); uv=uv.concat(uv4);
+                v=v.concat(p3); uv=uv.concat(uv3);
+
+                gl.uniform4f(u_FragColor, 1,0,0,1);
+                drawTriangle3DUVNormal(v,uv,v);
+             }
+
+
+
+        }
        
-        //front
-        drawTriangle3DUVNormal([0.0,1.0,0.0, 1.0,1.0,0.0, 0.0,0.0,0.0 ], [0,0, 1,0, 1,1], 
-        [0,0,-1, 0,0,-1, 0,0,-1]);
-        drawTriangle3DUVNormal([0.0,0.0,0.0, 1.0,0.0,0.0, 1.0,1.0,0.0 ], [0,1, 1,1, 0,0],
-        [0,0,-1, 0,0,-1, 0,0,-1]);
-        gl.uniform4f(u_FragColor, rgba[0]*.9, rgba[1]*.9, rgba[2]*.9, rgba[3]);
-
-        //back
-        drawTriangle3DUVNormal([0.0,1.0,1.0, 1.0,1.0,1.0, 0.0,0.0,1.0 ],[0,0, 1,0, 1,1],
-        [0,1,0, 0,1,0, 0,1,0]);
-        drawTriangle3DUVNormal([0.0,0.0,1.0, 1.0,0.0,1.0, 1.0,1.0,1.0 ],[0,1, 1,1, 0,0],
-        [0,1,0, 0,1,0, 0,1,0]);
-        gl.uniform4f(u_FragColor, rgba[0]*.8, rgba[1]*.8, rgba[2]*.8, rgba[3]);
-
-        //top
-        drawTriangle3DUVNormal([0.0,1.0,0.0, 1.0,1.0,0.0, 1.0,1.0,1.0 ],[0,0, 1,0, 1,1],
-        [1,0,0, 1,0,0, 1,0,0]);
-        drawTriangle3DUVNormal([0.0,1.0,1.0, 0.0,1.0,0.0, 1.0,1.0,1.0 ],[0,0, 1,0, 1,1],
-        [1,0,0, 1,0,0, 1,0,0]);
-        gl.uniform4f(u_FragColor, rgba[0]*.7, rgba[1]*.7, rgba[2]*.7, rgba[3]);
-
-        //bot
-        drawTriangle3DUVNormal([0.0,0.0,0.0, 0.0,0.0,1.0, 1.0,0.0,0.0 ],[0,0, 1,0, 1,1],
-        [-1,0,0, -1,0,0, -1,0,0]);
-        drawTriangle3DUVNormal([1.0,0.0,0.0, 1.0,0.0,1.0, 0.0,0.0,1.0 ],[0,0, 1,0, 1,1],
-        [-1,0,0, -1,0,0, -1,0,0]);
-        gl.uniform4f(u_FragColor, rgba[0]*.6, rgba[1]*.6, rgba[2]*.6, rgba[3]);
-
-        //left
-        drawTriangle3DUVNormal([0.0,0.0,0.0, 0.0,1.0,0.0, 0.0,1.0,1.0 ],[0,0, 1,0, 1,1],
-        [0,-1,0, 0,-1,0, 0,-1,0]);
-        drawTriangle3DUVNormal([0.0,1.0,1.0, 0.0,0.0,0.0, 0.0,0.0,1.0 ],[0,1, 1,1, 0,0],
-        [0,-1,0, 0,-1,0, 0,-1,0]);
-        gl.uniform4f(u_FragColor, rgba[0]*.5, rgba[1]*.5, rgba[2]*.5, rgba[3]);
-
-        //right
-        drawTriangle3DUVNormal([1.0,0.0,0.0, 1.0,1.0,0.0, 1.0,1.0,1.0 ],[0,0, 1,0, 1,1],
-        [0,0,1, 0,0,1, 0,0,1]);
-        drawTriangle3DUVNormal([1.0,1.0,1.0, 1.0,0.0,0.0, 1.0,0.0,1.0 ],[0,1, 1,1, 0,0],
-        [0,0,1, 0,0,1, 0,0,1]);
-
-        gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
-
-    }
-
-    renderfast(){
-        var rgba = this.color;
-        gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
-        gl.uniform1i(u_whichTexture, this.textureNum);
-        gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
-
-        var allverts = [];
-        //front
-        allverts = allverts.concat([0.0,0.0,0.0, 1.0,1.0,0.0, 1.0,0.0,0.0 ]);
-        allverts = allverts.concat([0.0,0.0,0.0, 0.0,1.0,0.0, 1.0,1.0,0.0 ]);
-        //back
-        allverts = allverts.concat([0.0,0.0,1.0, 1.0,1.0,1.0, 1.0,0.0,1.0 ]);
-        allverts = allverts.concat([0.0,0.0,1.0, 0.0,1.0,1.0, 1.0,1.0,1.0 ]);
-        //top
-        allverts = allverts.concat([0.0,1.0,0.0, 1.0,1.0,0.0, 1.0,1.0,1.0 ]);
-        allverts = allverts.concat([0.0,1.0,1.0, 0.0,1.0,0.0, 1.0,1.0,1.0 ]);
-        //bot
-        allverts = allverts.concat([0.0,0.0,0.0, 0.0,0.0,1.0, 1.0,0.0,0.0 ]);
-        allverts = allverts.concat([1.0,0.0,0.0, 1.0,0.0,1.0, 0.0,0.0,1.0 ]);
-        //left
-        allverts = allverts.concat([0.0,0.0,0.0, 0.0,1.0,0.0, 0.0,1.0,1.0 ]);
-        allverts = allverts.concat([0.0,1.0,1.0, 0.0,0.0,0.0, 0.0,0.0,1.0 ]);
-        //right
-        allverts = allverts.concat([1.0,0.0,0.0, 1.0,1.0,0.0, 1.0,1.0,1.0 ]);
-        allverts = allverts.concat([1.0,1.0,1.0, 1.0,0.0,0.0, 1.0,0.0,1.0 ]);
-        
-        //uvs
-        var alluvs = [
-        //front
-        0, 0,  1, 1,  1, 0,
-        0, 0,  0, 1,  1, 1,
-        //back
-        0, 0,  1, 1,  1, 0,
-        0, 0,  0, 1,  1, 1,
-        //top
-        0, 0,  1, 0,  1, 1,
-        0, 1,  0, 0,  1, 1,
-        //bot
-        0, 0,  0, 1,  1, 0,
-        1, 0,  1, 1,  0, 1,
-        //left
-        0, 0,  0, 1,  1, 1,
-        1, 1,  0, 0,  1, 0,
-        //right
-        0, 0,  0, 1,  1, 1,
-        1, 1,  0, 0,  1, 0,
-        ];
-
-        drawTriangle3DUV(allverts, alluvs);
+       
     }
 
 }
-
