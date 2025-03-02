@@ -18,25 +18,16 @@
 
     <p id="fpsDisplay">Waiting for update...</p>
 
-    <div>
-      Explore the crater!  Press [C] to place blocks and press [X] to destroy them!
-    </div>
 
     <div>
-        <div>  Animation</div>
 
-        <button type = "button" id = "on"> ON </button>
-
-        <button type = "button" id = "off"> OFF </button>
-
-    </div>
-
-
-    <div>
+      <button type = "button" id = "normalOn">ON</button>
+      <button type = "button" id = "normalOff">OFF</button>
+      <p>
 
       Camera Angle (x) <input type = "range" min = "0" max = "360" value = "0" class = "slider" id = "angleSlide">
       <p>
-      FOV Slider (wow!) <input type = "range" min = "10" max = "100" value = "50" class = "slider" id = "fov">
+      FOV Slider <input type = "range" min = "10" max = "100" value = "100" class = "slider" id = "fov">
         
     </div>
 
@@ -55,6 +46,7 @@
     <script src = "camera.js"></script>
 
     <script src = "cube.js"></script>
+    <script src = "sphere.js"></script>
     <script src = "cone.js"></script>
 
 

@@ -1,9 +1,9 @@
 //triangle class
-class Cube{
+class Sphere{
 
     //class constructor
     constructor(){
-        this.type = 'cube';
+        this.type = 'sphere';
         //this.position = [0.0, 0.0, 0.0];
         this.color = [1,1,1,1];
         //this.sCount = g_selectedSegments;
